@@ -1,0 +1,112 @@
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Weather App</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <button type="button" class="btn btn-dark" (click)="logOut()">Cerrar Sesión</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <section class="vh-100">
+    <div class="container py-5 h-100">
+
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-8 col-lg-6 col-xl-4">
+
+          <div class="card" style=" border-radius: 35px;">
+            <div class="card-body p-4">
+
+              <div class="container">
+                <input type="text" class="form-control" placeholder="Buscar Ciudad..." #nombreCiudad>
+                <br>
+                <button type="button" class="btn btn-info" (click)="SubmitCiudad(nombreCiudad)" >Obtener Clima</button>
+              </div>
+
+
+              <div class="d-flex" *ngIf="weather">
+                <br>
+                <span class="flex-grow-1">{{weather.name}}</span>
+                <span>{{weather.sys.country}}</span>
+              </div>
+
+              <div *ngIf="weather" class="d-flex flex-column text-center mt-5 mb-4">
+                <span class="display-4 mb-0 font-weight-bold" style="color: #1C2331;"> {{weather.main.temp}} °C </span>
+                <span class="small" style="color: #868B94">{{weather.weather[0].description}}</span>
+              </div>
+
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1" style="font-size: 1rem;">
+                  <div *ngIf="weather"><i class="fas fa-wind fa-fw" style="color: #868B94;"></i> <span class="ms-1">Humedad: {{weather.main.humidity}} </span></div>
+                  <div *ngIf="weather" ><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1">Presión: {{weather.main.pressure}}</span></div>
+                </div>
+                <div *ngIf="weather">
+                  <img src="{{weatherimage}}" width="100px">
+                </div>
+              </div>
+
+              <br>
+
+              <div class="container">
+                <div class="row">
+                  <div class="col-12">
+                    <mat-card>
+                      <mat-form-field appearance="fill">
+                        <mat-label>Buscar en tabla</mat-label>
+                        <input matInput placeholder="Buscar..." autocomplete="off" (keyup)="filterData($event)">
+                      </mat-form-field>
+
+                      <button type="button" class="btn btn-danger" (click)="BorrarDatos()">Borrar Historial</button>
+                      <br>
+
+                      <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
+
+
+                        <ng-container matColumnDef="ciudad">
+                          <th mat-header-cell mat-sort-header *matHeaderCellDef> Ciudad </th>
+                          <td mat-cell *matCellDef="let element"> {{element.ciudad}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="pais">
+                          <th mat-header-cell *matHeaderCellDef> Pais </th>
+                          <td mat-cell *matCellDef="let element"> {{element.pais}} </td>
+                        </ng-container>
+
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+                      <mat-paginator [pageSizeOptions]="[5, 10, 15]"
+                                     showFirstLastButtons
+                                     aria-label="Select page of periodic elements">
+                      </mat-paginator>
+                    </mat-card>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+    </div>
+
+
+  </section>
+
+</body>
+
